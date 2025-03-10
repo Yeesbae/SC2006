@@ -16,8 +16,12 @@ urlpatterns = [
     path('', views.main, name='main'),
     path('api/', include(router.urls)),
     path('api/account/', views.get_account, name='get_account'),
-    path('api/account/create/', views.create_account, name='create_account'),
-    path('api/save/', views.create_user, name='create_user'),
+    # path('api/account/create/', views.create_account, name='create_account'),
+    path('api/create-user/', views.create_user, name='create_user'),
+    # path('api/update-user/', views.update_user, name='update_user'),
+    path('api/delete-user/', views.delete_user, name='delete_user'),
+    path('api/delete-latest/', views.delete_latest_entry, name='delete_latest_entry'),
+    path('api/delete-all/', views.delete_all_entry, name='delete_all_entry'),
 ]
 
 if settings.DEBUG:
