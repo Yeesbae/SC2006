@@ -23,11 +23,9 @@
         <tr id="row-item">
             <td>Button 2</td>
             <td>Delete specific entry to database</td>
-            <form action="{% url 'delete_user' %}" method="post">
-                <td><input type="number" id="account_id" name="account_id" required></td>
-                <td><button class="button" type="submit" onclick="deleteSpecificEntry()">Click me</button></td>
-            </form>
-            
+            <td><input type="number" id="account_id" name="account_id" required></td>
+            <!-- <td><button class="button" onclick="getInput()">Click me</button></td> -->
+            <td><button class="button" onclick="deleteSpecificEntry()">Click me</button></td>
         </tr>
         <tr id="row-item">
             <td>Button 3</td>

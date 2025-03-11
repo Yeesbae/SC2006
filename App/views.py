@@ -70,25 +70,29 @@ def create_user(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
-
 @csrf_exempt
 def delete_user(request):
+    if request.method == 'DELETE':
+        try:
+            data = json.loads(request.body)
+            account_id = data.get('account_id')
+            if account_id:
+                account = Account.objects.get(account_id=account_id)
+                account.delete()
+                return JsonResponse({'status': 'success', 'message': 'User deleted successfully', 'account_id': account_id})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Nothing to delete'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
+@csrf_exempt
+def get_input(request):
     if request.method == 'POST':
         try:
-            account_id = request.POST.get("account_id")
-            if account_id:
-                try:
-                    account = Account.objects.get(account_id=account_id)
-                    if account:
-                        try:
-                            account.delete()
-                            return JsonResponse({'status': 'success', 'message': 'User deleted successfully'})
-                        except Exception as e:
-                            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-                    else:
-                        return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
-                except Account.DoesNotExist:
-                    return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
+            data = json.loads(request.body)
+            account_id = data.get('account_id')
+            return JsonResponse({'status': 'success', 'message': 'User Input', 'account_id': account_id})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)

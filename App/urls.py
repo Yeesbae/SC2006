@@ -20,6 +20,7 @@ urlpatterns = [
     path('api/create-user/', views.create_user, name='create_user'),
     # path('api/update-user/', views.update_user, name='update_user'),
     path('api/delete-user/', views.delete_user, name='delete_user'),
+    # path('api/get-input/', views.get_input, name='get_input'),
     path('api/delete-latest/', views.delete_latest_entry, name='delete_latest_entry'),
     path('api/delete-all/', views.delete_all_entry, name='delete_all_entry'),
 ]

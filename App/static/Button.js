@@ -124,12 +124,15 @@ function deleteAllEntry() {
 }
 
 function deleteSpecificEntry() {
+  const accountId = document.getElementById('account_id').value;
+  
   fetch('/api/delete-user/', {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': getCookie('csrftoken')
-    }
+    },
+    body: JSON.stringify({ account_id: accountId })
   })
 
   .then(response => response.json())
@@ -149,6 +152,34 @@ function deleteSpecificEntry() {
     // alert('Failed to delete entries');
   });
 }
+
+
+// Uncomment the code below to test POST request and return user input
+
+// function getInput() {
+//   const accountId = document.getElementById('account_id').value;
+
+//   fetch('/api/get-input/', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'X-CSRFToken': getCookie('csrftoken')
+//     },
+//     body: JSON.stringify({ account_id: accountId })
+//   })
+
+//   .then(response => response.json())
+
+//   .then(data => {
+//     console.log('Success:', data);
+//     // alert('Data saved successfully');
+//   })
+
+//   .catch((error) => {
+//     console.error('Error:', error);
+//     // alert('Failed to save data');
+//   });
+// }
 
 function getApiData() {
 
