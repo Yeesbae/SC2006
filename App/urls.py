@@ -16,7 +16,6 @@ urlpatterns = [
     path('', views.main, name='main'),
     path('api/', include(router.urls)),
     path('api/account/', views.get_account, name='get_account'),
-    # path('api/account/create/', views.create_account, name='create_account'),
     path('api/create-user/', views.create_user, name='create_user'),
     # path('api/update-user/', views.update_user, name='update_user'),
     path('api/delete-user/', views.delete_user, name='delete_user'),

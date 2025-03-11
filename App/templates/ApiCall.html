@@ -9,35 +9,64 @@
 <body>
     <table>
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Input</th>
-            <th>Api Call Button</th>
-        </tr>
-        <tr id="row-item">
-            <td>Button 1</td>
-            <td>Add dummy data to database</td>
+            <td>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Input</th>
+                        <th>Api Call Button</th>
+                    </tr>
+                    <tr id="row-item">
+                        <td>Button 1</td>
+                        <td>Add dummy data to database</td>
+                        <td></td>
+                        <td><button class="button" onclick="addDummy()">Click me</button></td>
+                    </tr>
+                    <tr id="row-item">
+                        <td>Button 2</td>
+                        <td>Delete specific entry to database</td>
+                        <td><input type="number" id="account_id" name="account_id" required></td>
+                        <!-- <td><button class="button" onclick="getInput()">Click me</button></td> -->
+                        <td><button class="button" onclick="deleteSpecificEntry()">Click me</button></td>
+                    </tr>
+                    <tr id="row-item">
+                        <td>Button 3</td>
+                        <td>Delete latest entry to database</td>
+                        <td></td>
+                        <td><button class="button" onclick="deleteLatestEntry()">Click me</button></td>
+                    </tr>
+                    <tr id="row-item">
+                        <td>Button 4</td>
+                        <td>Delete All Entry</td>
+                        <td></td>
+                        <td><button class="button" onclick="deleteAllEntry()">Click me</button></td>
+                    </tr>
+                </table>
+            </td>
             <td></td>
-            <td><button class="button" onclick="addDummy()">Click me</button></td>
-        </tr>
-        <tr id="row-item">
-            <td>Button 2</td>
-            <td>Delete specific entry to database</td>
-            <td><input type="number" id="account_id" name="account_id" required></td>
-            <!-- <td><button class="button" onclick="getInput()">Click me</button></td> -->
-            <td><button class="button" onclick="deleteSpecificEntry()">Click me</button></td>
-        </tr>
-        <tr id="row-item">
-            <td>Button 3</td>
-            <td>Delete latest entry to database</td>
-            <td></td>
-            <td><button class="button" onclick="deleteLatestEntry()">Click me</button></td>
-        </tr>
-        <tr id="row-item">
-            <td>Button 4</td>
-            <td>Delete All Entry</td>
-            <td></td>
-            <td><button class="button" onclick="deleteAllEntry()">Click me</button></td>
+            <td>
+                <table>
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Date of Birth</th>
+                    </tr>
+                    {% for account in accounts %}
+                    <tr>
+                        <td>{{ account.account_id }}</td>
+                        <td>{{ account.username }}</td>
+                        <td>{{ account.email }}</td>
+                        <td>{{ account.first_name }}</td>
+                        <td>{{ account.last_name }}</td>
+                        <td>{{ account.date_of_birth }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
         </tr>
     </table>
 </body>

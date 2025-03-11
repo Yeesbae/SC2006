@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
 from .serializer import AccountSerializer, PropertySerializer, DefaultSerializer
 from .models import *
 import json
@@ -14,8 +15,10 @@ import json
 # Create your views here.
 def main(request):
   template = loader.get_template('ApiCall.html')
-  return HttpResponse(template.render())
-
+  accounts = Account.objects.using('account-db').all()
+  # return HttpResponse(template.render())
+  return render(request, 'ApiCall.html', {'accounts': accounts})
+    
 class DefaultViewSet(viewsets.ModelViewSet):
     queryset = Default.objects.all()
     serializer_class = DefaultSerializer
@@ -29,20 +32,20 @@ class PropertyViewSet(viewsets.ModelViewSet):
     serializer_class = PropertySerializer
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def get_account(request):
-    accounts = Account.objects.all()
-    serializer = AccountSerializer(accounts, many=True)
-    return Response(serializer.data)
-
-# @api_view(['POST'])
-# def create_account(request):
-#     serializer = AccountSerializer(data=request.data)
-#     if serializer.is_valid():
-#         serializer.save()
-#         return Response(serializer.data, status=201)
-#     return Response(serializer.data, status=400)
-
+    if request.method == 'POST':
+        serializer = AccountSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.data, status=400)
+    elif request.method == 'GET':
+        accounts = Account.objects.all()
+        serializer = AccountSerializer(accounts, many=True)
+        return Response(serializer.data)
+    else:
+        pass
 
 @csrf_exempt
 def create_user(request):
