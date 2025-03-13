@@ -31,29 +31,68 @@ function randomName() {
 }
 
 function addDummy() {
-    // alert("Hello from a static file!");
-    const name = randomName();
+  // alert("Hello from a static file!");
+  const name = randomName();
 
-    const data = {
-      username: "testuser",
-      password: "testpassword",
-      email: "test@example.com",
-      // first_name: name.first,
-      // last_name: name.last,
-      first_name: "Test",
-      last_name: "Test",
-      date_of_birth: "1990-01-01"
-    }
+  const data = {
+    username: "testuser",
+    password: "testpassword",
+    email: "test@example.com",
+    // first_name: name.first,
+    // last_name: name.last,
+    first_name: "Test",
+    last_name: "Test",
+    date_of_birth: "1990-01-01"
+  }
 
-    console.log('Updated Data:', data);
+  console.log('Updated Data:', data);
 
-  fetch('api/create-user/', {
+  fetch('api/create-entry/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': getCookie('csrftoken')
-  },
-      body: JSON.stringify(data)
+    },
+
+    body: JSON.stringify(data)
+  })
+
+  .then(response => response.json())
+
+  .then(data => {
+    console.log('Success:', data);
+    // alert('Data saved successfully');
+  })
+
+  .catch((error) => {
+    console.error('Error:', error);
+    // alert('Failed to save data');
+  });
+}
+
+function addEntry() {
+  const accountId = document.getElementById('account_id').value;
+
+  const data = {
+    account_id: accountId, 
+    username: "testuser",
+    password: "testpassword",
+    email: "test@example.com",
+    first_name: "Test",
+    last_name: "Test",
+    date_of_birth: "1990-01-01"
+  }
+
+  console.log('Updated Data:', data);
+
+  fetch('/api/add-entry/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken')
+    },
+    
+    body: JSON.stringify(data)
   })
 
   .then(response => response.json())
@@ -126,7 +165,7 @@ function deleteAllEntry() {
 function deleteSpecificEntry() {
   const accountId = document.getElementById('account_id').value;
   
-  fetch('/api/delete-user/', {
+  fetch('/api/delete-entry/', {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

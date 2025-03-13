@@ -48,7 +48,7 @@ def get_account(request):
         pass
 
 @csrf_exempt
-def create_user(request):
+def create_entry(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -74,7 +74,32 @@ def create_user(request):
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
 @csrf_exempt
-def delete_user(request):
+def add_entry(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            account_id = data.get('account_id')
+            if not Account.objects.filter(account_id=account_id).exists():
+                account = Account(
+                    account_id=account_id,
+                    username=data['username'],
+                    password=data['password'],
+                    email=data['email'],
+                    first_name=data['first_name'],
+                    last_name=data['last_name'],
+                    date_of_birth=data['date_of_birth']
+                )
+                account.save(using='account-db')
+
+                return JsonResponse({'status': 'success', 'message': 'User created successfully', 'account_id': account_id})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'User already exists'}, status=409)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
+@csrf_exempt
+def delete_entry(request):
     if request.method == 'DELETE':
         try:
             data = json.loads(request.body)
@@ -126,4 +151,28 @@ def delete_all_entry(request):
                 return JsonResponse({'status': 'error', 'message': 'Nothing to delete'}, status=404)
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
+@csrf_exempt
+def update_entry(request):
+    if request.method == "UPDATE":
+        try:
+            data = json.loads(request.body)
+            account_id = data.get('account_id')
+
+            if Account.objects.filter(account_id=account_id).exists():
+                account = Account.objects.get(account_id=account_id)
+                account.username = data['username']
+                account.password = data['password']
+                account.email = data['email']
+                account.first_name = data['first_name']
+                account.last_name = data['last_name']
+                account.date_of_birth = data['date_of_birth']
+                account.save(using='account-db')
+
+                return JsonResponse({'status': 'success', 'message': 'User updated successfully', 'account_id': account_id})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'User does not exist'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
