@@ -220,6 +220,33 @@ function deleteSpecificEntry() {
 //   });
 // }
 
+
+function getEntry() {
+  const accountId = document.getElementById('account_id').value;
+
+  console.log('Account ID:', accountId);
+  
+  fetch('/api/get-entry/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken')
+    },
+    
+    body: JSON.stringify({ account_id: accountId })
+  })
+
+  .then(response => response.json())
+
+  .then(data => {
+    console.log('Success:', data);
+  })
+
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+
 function getApiData() {
 
 }

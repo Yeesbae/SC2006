@@ -22,6 +22,7 @@ urlpatterns = [
     # path('api/get-input/', views.get_input, name='get_input'),
     path('api/delete-latest/', views.delete_latest_entry, name='delete_latest_entry'),
     path('api/delete-all/', views.delete_all_entry, name='delete_all_entry'),
+    path('api/get-entry/', views.get_entry, name='get_entry'),
 ]
 
 if settings.DEBUG:

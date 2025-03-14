@@ -47,6 +47,7 @@ def get_account(request):
     else:
         pass
 
+
 @csrf_exempt
 def create_entry(request):
     if request.method == 'POST':
@@ -73,6 +74,7 @@ def create_entry(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
+
 @csrf_exempt
 def add_entry(request):
     if request.method == "POST":
@@ -98,6 +100,7 @@ def add_entry(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
+
 @csrf_exempt
 def delete_entry(request):
     if request.method == 'DELETE':
@@ -113,6 +116,7 @@ def delete_entry(request):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
 
 @csrf_exempt
 def get_input(request):
@@ -140,6 +144,7 @@ def delete_latest_entry(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
+
 @csrf_exempt
 def delete_all_entry(request):
     if request.method == 'DELETE':
@@ -152,6 +157,31 @@ def delete_all_entry(request):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
+
+@csrf_exempt
+def get_entry(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            account_id = data.get('account_id')
+            if Account.objects.filter(account_id=account_id).exists():
+                account = Account.objects.get(account_id=account_id)
+                return JsonResponse({'status': 'success', 'message': 'User found', 'data': {
+                    'account_id': account.account_id,
+                    'username': account.username,
+                    'password': account.password,
+                    'email': account.email,
+                    'first_name': account.first_name,
+                    'last_name': account.last_name,
+                    'date_of_birth': account.date_of_birth
+                }})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
 
 @csrf_exempt
 def update_entry(request):
